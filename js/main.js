@@ -1,4 +1,4 @@
-//import country from '/js/country.js'
+import country from '/js/country.js'
 import getCountry from '/services/countryAPI.js'
 import getNews from '/services/newsAPI.js'
 import news from '/js/news.js'
