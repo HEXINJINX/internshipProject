@@ -1,9 +1,9 @@
-import country from './js/country.js'
-import getCountry from './services/countryAPI.js'
-import getNews from './services/newsAPI.js'
-import news from './js/news.js'
-import getCategories from './services/categoriesAPI.js'
-import getExchangeRate from './services/currencyAPI.js'
+import country from './country.js'
+import getCountry from '../services/countryAPI.js'
+import getNews from '../services/newsAPI.js'
+import news from './news.js'
+import getCategories from '../services/categoriesAPI.js'
+import getExchangeRate from '../services/currencyAPI.js'
 
 window.addEventListener('load', async (e) => {
 
