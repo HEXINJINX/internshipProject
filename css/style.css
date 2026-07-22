@@ -1,0 +1,612 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #F5F5F5;
+}
+
+#container {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    padding: 16px;
+    grid-template-columns: 60px 1fr 500px;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: 
+        "sidebar search list"
+        "sidebar info info";
+    gap: 16px;
+    transition: 120ms;
+}
+
+#container.news {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    padding: 16px;
+    grid-template-columns: 60px 1fr 500px;
+    grid-template-rows: 0.2fr 1fr;
+    grid-template-areas: 
+        "sidebar search list"
+        "sidebar info list";
+    gap: 16px;
+}
+
+#search {
+    grid-area: search;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+}
+
+
+
+#region {
+    appearance: base-select;
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    scrollbar-width: none;
+    width: 200px;
+    padding: 16px;
+    cursor: pointer;
+}
+
+#region:focus-within {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+#region::picker-icon {
+    display: flex;
+    align-items: center;
+    transition: 120ms;
+}
+
+#region:open::picker-icon {
+    rotate: 180deg;
+}
+
+#region::picker(select) {
+    appearance: base-select;
+    border-radius: 16px;
+    scrollbar-width: none;
+}
+
+#region::picker:focus {
+    outline: none;
+}
+
+#region:focus {
+    outline: none;
+}
+
+#region option {
+    padding: 8px;
+    width: 200px;
+    transition: 120ms;
+}
+
+#region option:checked {
+    background-color: #4caf50;
+}
+
+#region option:hover {
+    padding-left: 16px;
+}
+
+
+#info {
+    grid-area: info;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 16px;
+    padding: 16px;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    min-height: 0;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.flagInfo {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: center;
+    position: sticky;
+    top: 0%;
+    background-color: white;
+    padding: 4px;
+}
+
+.flagInfo h1 {
+    white-space: nowrap;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+}
+
+.infoImage {
+    height: 100%;
+    border-radius: 16px;
+
+}
+
+#otherInfo {
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+#otherInfo span h2 {
+    text-transform: capitalize;
+}
+
+#otherInfo span h5 {
+    text-transform: capitalize;
+}
+
+.newsCard {
+    width: 100%;
+    height: 200px;
+    border: 2px solid #4caf50;
+    margin-top: 16px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    padding: 16px;
+    gap: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+
+    
+}
+
+.newsImg {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.newsInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}
+
+.newsTitle {
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+
+}
+
+.link {
+    color: #4caf50;
+}
+
+.card.searchInfo {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0;
+    height: fit-content;
+}
+
+.searchInfo h1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 8px;
+}
+
+.newsAbout {
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.credits {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.exchangeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.from, .to {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: 120ms ease;
+}
+
+.from:focus-within, .to:focus-within {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+.currencyCode {
+    background-color: #f8f9fa;
+    height: 100%;
+    min-width: 80px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #e0e0e0;
+}
+
+.currencyCode h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+#exchangeFrom, #exchangeTo {
+    height: 100%;
+    border: none;
+    padding: 0 16px;
+    font-size: 1.15rem;
+    font-family: 'Poppins', sans-serif;
+    color: #1a1a1a;
+    background: transparent;
+}
+
+#exchangeFrom:focus, #exchangeTo:focus {
+    outline: none;
+}
+
+#toFlag, #fromFlag {
+    height: 28px;
+    width: 42px;
+    border-radius: 4px;
+    margin-right: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+
+
+#list {
+    grid-area: list;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 16px;
+    overflow-y: scroll;
+    min-height: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: none;
+}
+
+.card {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: 120ms;
+    user-select: none;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+
+}
+
+.card:hover {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+    scale: 1.05;
+}
+
+.card img {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.name {
+    height: fit-content;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+    background-size: 200% 100%;
+    min-height: 50px;
+    animation: loading 1.5s infinite linear;
+    pointer-events: none;
+    cursor: none;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+#nav {
+    grid-area: sidebar;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 16px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+svg {
+    width: 24px;
+    height: 24px;
+}
+
+#nav label {
+    background-color: #F5F5F5;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 120ms;
+}
+
+#country:checked ~ .country {
+    background-color: #4caf50;
+}
+
+#weather:checked ~ .weather {
+    background-color: #4caf50;
+}
+
+#news:checked ~ .news {
+    background-color: #4caf50;
+}
+
+#exchange:checked ~ .exchange {
+    background-color: #4caf50;
+}
+
+#nav label:hover {
+    background-color: #e6f4ea;
+}
+
+#nav input[type=radio] {
+    display: none;
+}
+
+.search {
+    border: 2px solid #e0e0e0;
+    width: 50%;
+    height: 50px;
+    border-radius: 160px;
+    padding: none;
+    display: flex;
+    overflow: hidden;
+    gap: 16px;
+    padding-right: 4px;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    transition: 120ms;
+}
+
+.search:focus-within {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+#searchInput {
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding: 16px;
+}
+
+#searchInput:focus {
+    outline: none;
+}
+
+.searchButton {
+    min-width: 42px;
+    min-height: 42px;
+    border-radius: 50%;
+    border: none;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#searchInput:focus-visible .searchButton {
+  background-color: #4caf50;
+}
+
+#ratesContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#relativeRates {
+    width: 100%;
+}
+
+.ratesCard {
+    width: 100%;
+    min-height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.currencyExchangeCodes h1{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+.currencyExchangeRates {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+#ratesFrom {
+    padding: 32px;
+    width: 50%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 16px;
+}
+
+#ratesFrom img {
+    height: 70%;
+    width: 70%;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e0e0;
+    margin: 0 auto;
+}
+
+#chooseFromCurrency {
+    appearance: base-select;
+    border: 2px solid #e0e0e0;
+    border-radius: 16px;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    scrollbar-width: none;
+    padding: 16px;
+    cursor: pointer;
+}
+
+#chooseFromCurrency:focus-within {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+}
+
+#chooseFromCurrency::picker-icon {
+    display: flex;
+    align-items: center;
+    transition: 120ms;
+}
+
+#chooseFromCurrency:open::picker-icon {
+    rotate: 180deg;
+}
+
+#chooseFromCurrency::picker(select) {
+    appearance: base-select;
+    border-radius: 16px;
+    scrollbar-width: none;
+}
+
+#chooseFromCurrency::picker:focus {
+    outline: none;
+}
+
+#chooseFromCurrency:focus {
+    outline: none;
+}
+
+#chooseFromCurrency option {
+    padding: 8px;
+    width: 100%;
+    transition: 120ms;
+}
+
+#chooseFromCurrency option:checked {
+    background-color: #4caf50;
+}
+
+#chooseFromCurrency option:hover {
+    padding-left: 16px;
+}
