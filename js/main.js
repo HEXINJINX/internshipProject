@@ -27,12 +27,10 @@ window.addEventListener('load', async (e) => {
     let currencyCounter = 0
     let categories;
 
-    getAlphacodes()
-
-
     if (Object.keys(countryData).length === 0) {
-      countryData = await getCountry()
-      localStorage.setItem('countryData', JSON.stringify(countryData))
+        countryData = await getCountry()
+        localStorage.setItem('countryData', JSON.stringify(countryData))
+        getAlphacodes()
     }
     countryClass.active(true, countryData)
 
