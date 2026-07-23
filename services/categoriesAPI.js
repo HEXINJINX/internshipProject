@@ -1,4 +1,7 @@
-export default async function getCategories() {
+export default async function getCategories(current = false) {
+    if (current) {
+        return ['current']
+    }
     let categoryToGet;
     let category = []
 
