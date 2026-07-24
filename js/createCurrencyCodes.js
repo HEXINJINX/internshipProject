@@ -4,14 +4,14 @@ export default function getCurrencyCodes() {
     if (Object.keys(currencyCode).length === 0) {
         const countryData = JSON.parse(localStorage.getItem('countryData'))
 
-        for (const region of Object.values(countryData)) {
-            for (const country of region.data.objects) {
-                currencyCode[country.currencies[0].code] = country.currencies[0].name
+        for (const region in countryData) {
+            for (const country in countryData[region].data.objects) {
+                    currencyCode[`${countryData[region].data.objects[country].currencies[0].code}|${countryData[region].data.objects[country].names.common}`] = `${region}|${country}`
             }
         }
-
-        localStorage.setItem('currencyCodes', JSON.stringify(currencyCode))
     }
+
+    localStorage.setItem('currencyCodes', JSON.stringify(currencyCode))
 
     return currencyCode
 }

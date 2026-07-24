@@ -26,45 +26,52 @@ export default class currency {
         this.offset = 0
     }
 
-    
-    
-    drawCurrencyLists(search = "") {
-        let htmlContainer = []
-        let finalList = [this.mostTraded, Object.keys(this.currencyCodes)]
-        let listUsed;
-        
-        for (let i = ((12 * (1 + this.offset)) - 1); i >= (12 * this.offset); i--) {
-            if ((12 * (1 + this.offset)) > 144) {
-                listUsed = finalList[1]
-            } else {
-                listUsed = finalList[0]
-            }
-            let exchangeFrom = listUsed[i % (listUsed.length + 1)]
-            let exchangeTo = listUsed[Math.floor((1/(listUsed.length + 1)) * i)]
-            let exchangeRate = (this.currencyRates[listUsed[Math.floor((1/(listUsed.length + 1)) * i)]] / this.currencyRates[listUsed[i % (listUsed.length + 1)]]).toFixed(5)
+    currencyField(exchangeFrom, exchangeTo, operation) {
+        let ratesInfo = JSON.parse(sessionStorage.getItem('currentExchange'))
+        let codeFrom = document.getElementById('codeFrom')
+        let codeTo = document.getElementById('codeTo')
+        let symbolInfo1 = this.currencyCodes[ratesInfo[0]].split('|')
+        let symbolInfo2 = this.currencyCodes[ratesInfo[1]].split('|')
+        let fromSymbol = document.getElementById('fromSymbol')
+        let toSymbol = document.getElementById('toSymbol')
+        let countries = JSON.parse(localStorage.getItem('countryData'))
 
-            if (!(exchangeFrom) || !(exchangeTo) || !(exchangeRate)) continue;
-            
-            let htmlString = `
-                <div class="ratesCard">
-                    <div class="currencyExchangeCodes">
-                        <h1>${exchangeFrom} / ${exchangeTo}</h1>
-                    </div>
-                    <div class="currencyExchangeRates">
-                        ${exchangeRate}
-                    </div>
-                </div>`
-            
-            htmlContainer.push(htmlString)
+        codeFrom.innerText = ratesInfo[0]
+        codeTo.innerText = ratesInfo[1]
+
+        if (operation == 'straight') {
+            exchangeTo.value = Number(exchangeFrom.value) * ratesInfo[2]
+        } else if (operation == 'reverse') {
+            exchangeTo.value = Number(exchangeFrom.value) / ratesInfo[2]
         }
 
-        let finalString = htmlContainer.join('')
-        let relativeRates = document.getElementById('relativeRates')
-        let loading = document.getElementById('loadingMore')
-        relativeRates.removeChild(loading)
-        this.deleteOutOfView(relativeRates)
-        relativeRates.insertAdjacentHTML('beforeend', finalString)
-        relativeRates.appendChild(loading)
-        this.offset++
+        
+
+        fromSymbol.innerText = countries[symbolInfo1[0]].data.objects[symbolInfo1[1]].currencies[0].symbol
+        toSymbol.innerText = countries[symbolInfo2[0]].data.objects[symbolInfo2[1]].currencies[0].symbol
+    }
+
+    drawField() {
+        document.getElementById('list').innerHTML = `
+            <div class="exchangeContainer">
+                <span class="from">
+                    <span class="currencyCode">
+                        <h1 id="codeFrom">
+                            NONE
+                        </h1>
+                    </span>
+                    <input type="number" name="" id="exchangeFrom">
+                    <h1 id="fromSymbol"></h1>
+                </span>
+                <span class="to">
+                    <span class="currencyCode">
+                        <h1 id="codeTo">
+                            NONE
+                        </h1>
+                    </span>
+                    <input type="number" name="" id="exchangeTo">
+                    <h1 id="toSymbol"></h1>
+                </span>
+            </div>`
     }
 }

@@ -17,48 +17,6 @@ body {
     background-color: #F5F5F5;
 }
 
-#container {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    padding: 16px;
-    grid-template-columns: 60px 1fr 500px;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: 
-        "sidebar search list"
-        "sidebar info info";
-    gap: 16px;
-    transition: 120ms;
-}
-
-#container.news {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    padding: 16px;
-    grid-template-columns: 60px 1fr 500px;
-    grid-template-rows: 0.2fr 1fr;
-    grid-template-areas: 
-        "sidebar search list"
-        "sidebar info list";
-    gap: 16px;
-}
-
-#search {
-    grid-area: search;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    border-radius: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 8px;
-}
-
-
-
 #region {
     appearance: base-select;
     border: 2px solid #e0e0e0;
@@ -72,9 +30,10 @@ body {
     width: 200px;
     padding: 16px;
     cursor: pointer;
+    transition: 120ms ease;
 }
 
-#region:focus-within {
+#region:open {
   border-color: #4caf50;
   box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
 }
@@ -117,23 +76,6 @@ body {
     padding-left: 16px;
 }
 
-
-#info {
-    grid-area: info;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    border-radius: 16px;
-    padding: 16px;
-    padding-top: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-    min-height: 0;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-}
-
 .flagInfo {
     height: 60px;
     display: flex;
@@ -159,6 +101,27 @@ body {
 
 }
 
+#countryLists {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+#listOne, #listTwo {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 16px;
+    scrollbar-width: none;
+}
+
 #otherInfo {
     height: auto;
     display: grid;
@@ -176,21 +139,32 @@ body {
 .newsCard {
     width: 100%;
     height: 200px;
-    border: 2px solid #4caf50;
+    border: 2px solid #e0e0e0;
     margin-top: 16px;
     border-radius: 16px;
     display: flex;
     flex-direction: row;
     padding: 16px;
     gap: 16px;
+    transition: 120ms ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
 }
 
+.newsCard:hover {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0.15);
+}
+
 #newsContainer {
+    box-sizing: border-box;
     max-width: 100%;
     max-height: 100%;
     overflow-y: scroll;
     scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
 }
 
 .newsImg {
@@ -289,9 +263,17 @@ body {
     border-right: 1px solid #e0e0e0;
 }
 
-.currencyCode h1 {
+.currencyCode h1{
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+#toSymbol, #fromSymbol {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
     font-weight: 600;
     color: #333333;
     margin: 0;
@@ -325,23 +307,6 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-
-
-#list {
-    grid-area: list;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    border-radius: 16px;
-    overflow-y: scroll;
-    min-height: 0;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    scrollbar-width: none;
-}
-
 .card {
     width: 100%;
     height: 50px;
@@ -364,7 +329,6 @@ input[type="number"]::-webkit-outer-spin-button {
 .card:hover {
     border-color: #4caf50;
     box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
-    scale: 1.05;
 }
 
 .card img {
@@ -409,6 +373,7 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    border: 1px solid #e0e0e0;
 }
 
 svg {
@@ -483,12 +448,66 @@ svg {
     outline: none;
 }
 
+#options {
+    width: 50%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+.optionCard {
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+    transition: 120ms ease;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.optionCard:hover {
+    background-color: #F5F5F5;
+}
+
+#weatherDisplay {
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.weatherCard {
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    justify-content: center;
+    text-align: center;
+    transition: 120ms ease;
+    border: 1px solid #e0e0e0;
+}
+
+.weatherCard:hover {
+    box-shadow: 3px 3px 3px rgba(76, 175, 80, 0.15);
+}
+
 .searchButton {
     min-width: 42px;
     min-height: 42px;
     border-radius: 50%;
     border: none;
-    background-color: #e0e0e0;
+    background-color: #f8f9fa;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -510,6 +529,7 @@ svg {
     width: 100%;
     overflow-y: scroll;
     scrollbar-width: none;
+    padding: 16px;
 }
 
 .ratesCard {
@@ -524,6 +544,13 @@ svg {
     border-radius: 16px;
     padding: 16px;
     margin-top: 16px;
+    transition: 120ms ease;
+    cursor: pointer;
+}
+
+.ratesCard:hover {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
 }
 
 .currencyExchangeCodes h1{
@@ -578,8 +605,8 @@ svg {
 }
 
 #chooseFromCurrency:focus-within {
-  border-color: #4caf50;
-  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.15);
 }
 
 #chooseFromCurrency::picker-icon {

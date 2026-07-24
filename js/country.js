@@ -6,17 +6,16 @@ export default class country {
 
   constructor() {
     this.searchInput = document.getElementById('searchInput')
-    this.list = document.getElementById('list')
     this.alpha_3 = JSON.parse(localStorage.getItem('alpha_3'))
     this.selectedRegion = document.getElementById('region')
     this.info = document.getElementById('info')
   }
 
-  async drawCards(search = "") {
+  async drawCards(search = "", field) {
     if (!this.isActive) {
       return
     }
-    document.getElementById('list').innerText = ''
+    field.innerText = ''
     if (document.getElementById('news').checked) {
       const card = document.createElement('div')
       card.classList.add('card')
@@ -25,9 +24,10 @@ export default class country {
       const h1 = document.createElement('h1')
       h1.innerText = search.length > 0? `‎ Search For: ${search}`: ''
       h1.classList.add('searchInfo')
+      h1.classList.add('card')
 
       card.appendChild(h1)
-      document.getElementById('list').appendChild(card)
+      field.appendChild(card)
     }
 
     let countryDataInUse = this.countryData
@@ -39,7 +39,7 @@ export default class country {
     for (const regions of Object.values(countryDataInUse)) {
       for (const [index, countryId] of Object.entries(regions.data.objects)) {
         if (search.length > 0) {
-          const names = [...countryId.names.alternates, countryId.names.official, countryId.names.common]
+          const names = [...countryId.names.alternates, countryId.names.official, countryId.names.common, countryId.currencies[0].code, countryId.currencies[0].name]
           if (!(names.some(name => name.toLowerCase().includes(search.toLowerCase())))) {
             continue
           }
@@ -61,7 +61,7 @@ export default class country {
         card.appendChild(img)
         card.appendChild(p)
 
-        this.list.appendChild(card)
+        field.appendChild(card)
       }
     }
   } 
@@ -70,6 +70,8 @@ export default class country {
     if (!this.isActive) {
       return
     }
+
+    if (!(document.getElementById('country').checked)) return;
     const displayData = {
       location: {
         region: this.countryData[region].data.objects[country].region,
