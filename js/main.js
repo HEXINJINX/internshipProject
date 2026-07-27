@@ -1,4 +1,4 @@
-//import country from './country.js'
+import country from './country.js'
 import getCountry from '../services/countryAPI.js'
 import getNews from '../services/newsAPI.js'
 import news from './news.js'
@@ -8,6 +8,8 @@ import getCurrencyCodes from './createCurrencyCodes.js'
 import getExchangeRate from '../services/currencyAPI.js'
 import getCategories from '../services/categoriesAPI.js'
 import getLocation from '../services/getLocationAPI.js'
+import getWeather from '../services/weatherAPI.js'
+import weather from './weather.js'
 
 
 
@@ -15,6 +17,7 @@ window.addEventListener('load', async (e) => {
     const newsClass = new news()
     const countryClass = new country()
     const currencyClass = new currency()
+    const weatherClass = new weather()
     const selectedRegion = document.getElementById('region')
     let countryData =  JSON.parse(localStorage.getItem('countryData')) || {}
     const search = document.getElementById('search')
@@ -25,6 +28,7 @@ window.addEventListener('load', async (e) => {
     const newsButton = document.getElementById('news')
     const countryButton = document.getElementById('country')
     const exchangeButton = document.getElementById('exchange')
+    const searchInput = document.getElementById('searchInput')
     let currencyCounter = 0
     let categories;
     const region = document.getElementById('region')
@@ -40,10 +44,19 @@ window.addEventListener('load', async (e) => {
 
     countryClass.active(true, countryData)
 
+    document.querySelector('.theme').addEventListener('click', (e) => {
+        const html = document.documentElement
+        const currentTheme = html.getAttribute('data-theme')
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+        
+        html.setAttribute('data-theme', newTheme)
+    })
+
     countryButton.checked = true
     countryClass.drawCards("", list)
     document.getElementById('nav').addEventListener('change', async (e) => {
         if (e.target.id == 'country') {
+            searchInput.value = ''
             info.innerText = ''
             weatherButton.checked = false
             exchangeButton.checked = false
@@ -54,13 +67,11 @@ window.addEventListener('load', async (e) => {
             region.style.display = 'flex'
             let searchDiv = document.getElementById('search')
             let options = document.getElementById('options')
-
-            if ((options)) {
-                searchDiv.removeChild(options)
-            }
-            
+            searchInput.placeholder = 'Search For Country'
+        
             
         } else if (e.target.id == 'weather') {
+            searchInput.value = ''
             info.innerText = ''
             list.innerText = ''
             newsButton.checked = false
@@ -72,14 +83,14 @@ window.addEventListener('load', async (e) => {
             let searchDiv = document.getElementById('search')
             let options = document.getElementById('options')
 
-            if ((options)) {
-                searchDiv.removeChild(options)
-            }
-            
-            
+            let weatherDisplay = document.createElement('div')
+            weatherDisplay.id = 'weatherDisplay'
+            info.appendChild(weatherDisplay)
+            searchInput.placeholder = 'Search For City'
 
 
         } else if (e.target.id == 'news') {
+            searchInput.value = ''
             info.innerText = ''
             list.innerText = ''
             countryClass.active(true, countryData)
@@ -91,11 +102,9 @@ window.addEventListener('load', async (e) => {
             region.style.display = 'flex'
             let searchDiv = document.getElementById('search')
             let options = document.getElementById('options')
+            searchInput.placeholder = 'Search For Topic'
 
-            if (options) {
-                searchDiv.removeChild(options)
-            }
-            
+
             let newsContainer = document.getElementById('newsContainer')
 
             if (!newsContainer) {
@@ -122,14 +131,12 @@ window.addEventListener('load', async (e) => {
 
 
         } else if (e.target.id == 'exchange') {
+            searchInput.value = ''
             info.innerText = ''
             list.innerText = ''
             let searchDiv = document.getElementById('search')
             let options = document.getElementById('options')
 
-            if ((options)) {
-                searchDiv.removeChild(options)
-            }
             region.style.display = 'flex'
             let htmlString = `
                 <div id="countryLists">
@@ -148,22 +155,36 @@ window.addEventListener('load', async (e) => {
             countryButton.checked = false
             weatherButton.checked = false
             newsButton.checked = false            
-
-            currencyClass.requiredInfo(currencyRates, currencyCode)
+            
             currencyClass.drawField()
             
             await countryClass.drawCards(searchInput.value, listOne)
             await countryClass.drawCards(searchInput.value, listTwo)
             
+            searchInput.placeholder = 'Search For Country/Currency'
+
         }
     })
 
-    info.addEventListener('click', (e) => {
+    searchInput.addEventListener('change', (e) => {
+        if ((newsButton.checked)) {
+            let loading = document.getElementById('loadingMore')
+            let newsContainer = document.getElementById('newsContainer') 
+            newsContainer.innerHTML = ''
+            newsContainer.appendChild(loading)
+            categories = e.target.value
+            observer.unobserve(loading)
+            observer.observe(loading)
+        }
+            
+    })
+
+    info.addEventListener('click', async (e) => {
         if (e.target.parentElement.id == 'listOne') {
             let currentExchange = JSON.parse(sessionStorage.getItem('currentExchange')) || []
             let otherEmpty = false
 
-            if (currentExchange.length == 0 || currentExchange[0] == '-') {
+            if (currentExchange.length == 0 || currentExchange[1] == '-') {
                 otherEmpty = true
                 currentExchange = ['-', '-', '-']
             }
@@ -179,12 +200,12 @@ window.addEventListener('load', async (e) => {
             let exchangeFrom = document.getElementById('exchangeFrom')
             let exchangeTo = document.getElementById('exchangeTo')
 
-            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight')
+            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight', currencyCode)
         } else if (e.target.parentElement.id == 'listTwo') {
             let currentExchange = JSON.parse(sessionStorage.getItem('currentExchange')) || []
             let otherEmpty = false
 
-            if (currentExchange.length == 0 || currentExchange[1] == '-') {
+            if (currentExchange.length == 0 || currentExchange[0] == '-') {
                 currentExchange = ['-', '-', '-']
                 otherEmpty = true
             }
@@ -200,9 +221,26 @@ window.addEventListener('load', async (e) => {
             let exchangeFrom = document.getElementById('exchangeFrom')
             let exchangeTo = document.getElementById('exchangeTo')
 
-            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight')
+            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight', currencyCode)
+        }  else if (e.target.classList.contains('weatherCard')) {
+            weatherClass.displayForcastDetails(e.target.id)
+        } else if (e.target.classList.contains('weatherImg')) {
+            weatherClass.displayForcastDetails(e.target.parentNode.id)
 
+        }
+    })
+
+    search.addEventListener('click', async (e) => {
+        if ((e.target.classList.contains('optionCard'))) {
+            let searchDiv = document.getElementById('search')
+            let options = document.getElementById('options')
+            options.innerText = ''
             
+            let cardData = String(e.target.id).split('|')
+            let n = cardData.length
+
+            let weatherData = await getWeather(cardData[n - 2], cardData[n - 1])
+            weatherClass.drawWeatherCards(weatherData)
         }
     })
 
@@ -210,18 +248,18 @@ window.addEventListener('load', async (e) => {
         if (e.target.id == 'exchangeFrom') {
             let exchangeFrom = document.getElementById('exchangeFrom')
             let exchangeTo = document.getElementById('exchangeTo')
-            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight')
+            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight', currencyCode)
         } else if (e.target.id == 'exchangeTo') {
             let exchangeFrom = document.getElementById('exchangeFrom')
             let exchangeTo = document.getElementById('exchangeTo')
-            currencyClass.currencyField(exchangeTo, exchangeFrom, 'reverse')
+            currencyClass.currencyField(exchangeTo, exchangeFrom, 'reverse', currencyCode)
         }
     })
 
     
 
     searchInput.addEventListener('input', async (e) => {
-        if (countryButton.checked || newsButton.checked) {
+        if (countryButton.checked) {
             countryClass.drawCards(searchInput.value, list)
         } else if (exchangeButton.checked) {
             let listOne = document.getElementById('listOne')
@@ -233,26 +271,14 @@ window.addEventListener('load', async (e) => {
             let searchDiv = document.getElementById('search')
             let options = document.getElementById('options')
             let locations = await getLocation(e.target.value)
-            while (Array.from(searchDiv.children).some(child => child.id == 'options')) {
-                searchDiv.removeChild(options)
-            }
-
             if (!locations) {
+                options.innerHTML = ''
                 return
             }
-            
 
-            options = document.createElement('div')
-            options.id = 'options'
-
-            searchDiv.appendChild(options)
-
-            
-            
-            
+            options.innerHTML = ''
             for (const location in locations) {
-                
-                let option = document.createElement('div')
+                let option = document.createElement('li')
                 option.classList.add('optionCard')
                 option.id = locations[location]
                 option.innerText = location
@@ -260,7 +286,6 @@ window.addEventListener('load', async (e) => {
                 options.appendChild(option)
             }
 
-            searchDiv.appendChild(options)
         }
     })
     
@@ -272,20 +297,15 @@ window.addEventListener('load', async (e) => {
         if (e.target.classList.contains('card') && countryButton.checked) {
             const cardData = e.target.classList
             countryClass.displayInfo(cardData[1], cardData[2])
-        } else if ((e.target.classList.contains('card') && newsButton.checked)) {
-            let loading = document.getElementById('loadingMore')
-            let newsContainer = document.getElementById('newsContainer') 
-            newsContainer.innerHTML = ''
-            newsContainer.appendChild(loading)
-            if (e.target.classList.contains('searchInfo')) {
-                categories = (e.target.textContent).replace('‎ Search For: ', '').replace(' ', '')
-                observer.unobserve(loading)
-                observer.observe(loading)
-            } else {
-                categories = countryData[e.target.classList[1]].data.objects[e.target.classList[2]].names.common.toLowerCase().replace(' ', '')
-                observer.unobserve(loading)
-                observer.observe(loading)
-            }
+        } else if (e.target.id == 'switch') {
+            let rateList = JSON.parse(sessionStorage.getItem('currentExchange'))
+            rateList = [rateList[1], rateList[0], rateList[2]**-1]
+
+            sessionStorage.setItem('currentExchange', JSON.stringify(rateList))
+            let exchangeFrom = document.getElementById('exchangeFrom')
+            let exchangeTo = document.getElementById('exchangeTo')
+
+            currencyClass.currencyField(exchangeFrom, exchangeTo, 'straight', currencyCode)
         }
     })
 
@@ -336,4 +356,23 @@ window.addEventListener('load', async (e) => {
     const observer = new IntersectionObserver(callback, options);
     observer.observe(target);
 
+    window.addEventListener('error', (e) => {
+        let notification = document.getElementById('notification')
+        let htmlString = `<div class="notiCard">
+            Error: ${e.message}
+        </div>`
+
+        notification.insertAdjacentHTML('afterbegin', htmlString)
+            
+    })
+
+    window.addEventListener('operationSuccess', (e) => {
+        let notification = document.getElementById('notification')
+        let htmlString = `<div class="notiCard">
+            Success: ${e.message}
+        </div>`
+
+        notification.insertAdjacentHTML('afterbegin', htmlString)
+        
+    })
 })

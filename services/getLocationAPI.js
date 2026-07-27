@@ -22,23 +22,45 @@ export default async function getLocation(search) {
         }
     }
 
+    let locationToSend = arrangeData(locations, search)
+
+    if (locationToSend.length < 5) {
+        let newlocations = await fetchData(search)
+
+        for (const location of newlocations.results) {
+            locations[`${String(location.name).toLowerCase()}|${String(location.country)}|${location.admin1}`] = `${location.latitude}|${location.longitude}`
+        }
+
+        locationToSend = arrangeData(locations, search)
+    }
+
     localStorage.setItem('locations', JSON.stringify(locations))
 
+     const successEvent = new CustomEvent('operationSuccess', {
+        detail: { message: 'Data Retrieved successfully!', timestamp: Date.now() }
+    });
+
+    document.dispatchEvent(successEvent);
+
+    return locationToSend
+
+}
+
+function arrangeData(array, search) {
     let locationToSend = {}
     let found = 0
 
-    for (const location in locations) {
+    for (const location in array) {
         if (found >= 5) {
             break
         }
-        if (location.includes(search.toLowerCase())) {
-            locationToSend[location] = locations[location]
+        if (location.toLowerCase().replace(' ', '').includes(search.replace(' ', '').toLowerCase())) {
+            locationToSend[location] = array[location]
             found++ 
         }
     }
 
     return locationToSend
-
 }
 
 async function fetchData(city) {

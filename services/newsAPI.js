@@ -29,7 +29,7 @@ export default async function getNews(content = null) {
         let newsAge = currentTime - Number(newsData[0])
         if (newsAge > 86400000) {
             let newNewsData = await fetchData(q)
-            newsBundle = newNewsData.json().articles
+            newsBundle = newNewsData
             newsStorage[q.toLowerCase()] = [currentTime, newNewsData]
 
             localStorage.setItem('newsData', JSON.stringify(newsStorage))
@@ -38,6 +38,11 @@ export default async function getNews(content = null) {
         } 
 
         newsBundle = newsData[1]
+        const successEvent = new CustomEvent('operationSuccess', {
+            detail: { message: 'Data Retrieved successfully!', timestamp: Date.now() }
+        });
+    
+        document.dispatchEvent(successEvent);
         return newsBundle
     }
 }

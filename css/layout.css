@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('./theme.css');
 
 #container {
     height: 100%;
@@ -12,6 +13,7 @@
         "sidebar info info";
     gap: 16px;
     transition: 120ms;
+    overflow: hidden;
 }
 
 #container.news {
@@ -20,49 +22,48 @@
     display: grid;
     padding: 16px;
     grid-template-columns: 60px 1fr 500px;
-    grid-template-rows: 0.2fr 1fr;
+    grid-template-rows: 0.3fr 1fr;
     grid-template-areas: 
-        "sidebar search list"
-        "sidebar info list";
+        "sidebar search search"
+        "sidebar info info";
     gap: 16px;
 }
+
 
 #search {
     grid-area: search;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: var(--bg-white);
     border-radius: 16px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 8px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-default);
 }
 
 #info {
     grid-area: info;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: var(--bg-white);
     border-radius: 16px;
     padding: 16px;
 
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
+    overflow-x: hidden;
     min-height: 0;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-default);
 }
 
 #list {
     grid-area: list;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: var(--bg-white);
     border-radius: 16px;
     overflow-y: scroll;
     min-height: 0;
@@ -71,5 +72,77 @@
     flex-direction: column;
     gap: 16px;
     scrollbar-width: none;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-default);
+}
+
+#container.news > #list {
+    display: none;
+}
+
+#nav {
+    grid-area: sidebar;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-white);
+    border-radius: 16px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-default);
+    position: sticky;
+    transition: 120ms;
+}
+
+@media (max-width: 1000px) {
+    #container {
+        grid-template-columns: 60px 1fr 300px;
+    }
+
+    #container.news {
+        grid-template-columns: 60px 1fr 300px;
+    }
+}
+
+@media (max-width: 800px) {
+    #container {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        padding: 16px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 120px 1fr 1fr 60px;
+        grid-template-areas: 
+            "search"
+            "list"
+            "info"
+            "sidebar";
+        gap: 16px;
+        transition: 120ms;
+        overflow: hidden;
+    }
+
+    #container.news {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        padding: 16px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 120px 1fr 60px;
+        grid-template-areas: 
+            "search"
+            "info"
+            "sidebar";
+        gap: 16px;
+    }
+
+    #nav {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .theme {
+        position: static;
+    }
 }

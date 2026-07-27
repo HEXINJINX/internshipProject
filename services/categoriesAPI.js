@@ -33,5 +33,11 @@ export default async function getCategories(current = false) {
 
     let finalCategory = [...category, ...categoryFallBack]
 
+    const successEvent = new CustomEvent('operationSuccess', {
+        detail: { message: 'Data Retrieved successfully!', timestamp: Date.now() }
+    });
+
+    document.dispatchEvent(successEvent);
+
     return finalCategory
 }

@@ -7,6 +7,12 @@ export default async function getExchangeRate() {
         fetchData()
     }
 
+     const successEvent = new CustomEvent('operationSuccess', {
+        detail: { message: 'Data Retrieved successfully!', timestamp: Date.now() }
+    });
+
+    document.dispatchEvent(successEvent);
+
     return exchangeRate[1]
 }
 
