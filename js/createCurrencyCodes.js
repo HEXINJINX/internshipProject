@@ -6,7 +6,8 @@ export default function getCurrencyCodes() {
 
         for (const region in countryData) {
             for (const country in countryData[region].data.objects) {
-                    currencyCode[`${countryData[region].data.objects[country].currencies[0].code}|${countryData[region].data.objects[country].names.common}`] = `${region}|${country}`
+                let name = [countryData[region].data.objects[country].currencies[0].code, countryData[region].data.objects[country].names.common, countryData[region].data.objects[country].currencies[0].name, countryData[region].data.objects[country].currencies[0].symbol, countryData[region].data.objects[country].names.common, ...countryData[region].data.objects[country].names.alternates].join('|')
+                currencyCode[name] = `${region}|${country}`
             }
         }
     }

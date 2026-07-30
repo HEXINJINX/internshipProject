@@ -22,6 +22,58 @@ export default class currency {
         this.offset = 0
     }
 
+    drawDashboardCurrencyExchange(country, codes, currency) {
+        let ratesInfo = JSON.parse(localStorage.getItem('exchangeRates'))[1]
+        let rates = document.querySelector('.rates')
+
+        let htmlString = `
+                <div class="ratesCard">
+                    <span class="rateOrigin">
+                        ${this.mostTraded[0]} / ${String(currency).split('|')[0]}
+                    </span>
+                    <span class="ratesValue">
+                        ${country[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[0]].data.objects[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[1]].currencies[0].symbol}${Number(ratesInfo[String(currency).split('|')[0]] / ratesInfo[this.mostTraded[0]]).toFixed(2)}
+                    </span>
+                </div>
+                <div class="ratesCard">
+                    <span class="rateOrigin">
+                        ${this.mostTraded[1]} / ${String(currency).split('|')[0]}
+                    </span>
+                    <span class="ratesValue">
+                        ${country[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[0]].data.objects[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[1]].currencies[0].symbol}${Number(ratesInfo[String(currency).split('|')[0]] / ratesInfo[this.mostTraded[1]]).toFixed(2)}
+                    </span>
+                </div>
+                <div class="ratesCard">
+                    <span class="rateOrigin">
+                        ${this.mostTraded[2]} / ${String(currency).split('|')[0]}
+                    </span>
+                    <span class="ratesValue">
+                        ${country[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[0]].data.objects[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[1]].currencies[0].symbol}${Number(ratesInfo[String(currency).split('|')[0]] / ratesInfo[this.mostTraded[2]]).toFixed(2)}
+                    </span>
+                </div>
+                <div class="ratesCard">
+                    <span class="rateOrigin">
+                        ${this.mostTraded[3]} / ${String(currency).split('|')[0]}
+                    </span>
+                    <span class="ratesValue">
+                        ${country[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[0]].data.objects[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[1]].currencies[0].symbol}${Number(ratesInfo[String(currency).split('|')[0]] / ratesInfo[this.mostTraded[3]]).toFixed(2)}
+                    </span>
+                </div>
+                <div class="ratesCard">
+                    <span class="rateOrigin">
+                        ${this.mostTraded[4]} / ${String(currency).split('|')[0]}
+                    </span>
+                    <span class="ratesValue">
+                        ${country[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[0]].data.objects[codes[Object.keys(codes).find((key) => key.includes(currency.split('|')[0]))].split('|')[1]].currencies[0].symbol}${Number(ratesInfo[String(currency).split('|')[0]] / ratesInfo[this.mostTraded[4]]).toFixed(2)}
+                    </span>
+                </div>
+                `
+
+                rates.innerHTML = ''
+                rates.insertAdjacentHTML('beforeend', htmlString)
+                localStorage.setItem('currentExchange', JSON.stringify(String(currency).split('|')[0]))
+    }
+
     currencyField(exchangeFrom, exchangeTo, operation, currencyCodes) {
         
         let ratesInfo = JSON.parse(sessionStorage.getItem('currentExchange'))
@@ -71,5 +123,50 @@ export default class currency {
                     <h1 id="toSymbol"></h1>
                 </span>
             </div>`
+    }
+
+    drawCurrencyExchange(codes, rates, value) {
+        let main = document.getElementById('region').value
+        let currencyList = document.querySelector('.currencyList')
+
+        let htmlContainer = []
+        htmlContainer.push(`
+            <div class="currencyRow rowHeader">
+                <h3>Currency</h3>
+                <h3>Rate</h3>
+                <h3>Inverse</h3>
+                <h3>Amount</h3>
+            </div>
+        `)
+
+        let mainValue;
+
+        if (!value) {
+            mainValue = 1
+        } else {
+            mainValue = value
+        }
+
+        for (const currency in codes) {
+            console.log(Number(value))
+            let htmlString = `
+            <div class="currencyRow">
+                <h3>${currency.split('|')[0]}</h3>
+                <h3>${(rates[currency.split('|')[0]] / rates[main]).toFixed(2)}</h3>
+                <h3>${(rates[main] / rates[currency.split('|')[0]]).toFixed(2)}</h3>
+                <h3>${Number((rates[currency.split('|')[0]] / rates[main]).toFixed(2)) * Number(mainValue)}</h3>
+            </div>`
+
+            if (htmlContainer.includes(htmlString)) {
+                continue
+            }
+
+            htmlContainer.push(htmlString)
+
+        }
+        let finalString = htmlContainer.join('')
+        currencyList.innerHTML = ''
+        currencyList.insertAdjacentHTML('beforeend', finalString)
+
     }
 }

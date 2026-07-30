@@ -1,35 +1,35 @@
 :root {
-    --bg-primary: #F5F5F5;
-    --bg-white: #ffffff;
-    --bg-light: #f8f9fa;
-    --bg-hover: #e6f4ea;
-    --border-default: #e0e0e0;
-    --text-primary: #1a1a1a;
-    --text-secondary: #333333;
-    --accent-green: #4caf50;
-    --accent-shadow: rgba(76, 175, 80, 0.15);
-    --shadow-light: rgba(0, 0, 0, 0.05);
-    --shadow-medium: rgba(0, 0, 0, 0.03);
-    --shadow-dark: rgba(0, 0, 0, 0.1);
-    --skeleton-start: #e2e8f0;
-    --skeleton-mid: #f1f5f9;
-    --skeleton-end: #e2e8f0;
+    --bg-primary: #f5efe6;
+    --bg-white: #faf6f0;
+    --bg-light: #f0ebe3;
+    --bg-hover: #e8dfd3;
+    --border-default: #d4c9bc;
+    --text-primary: #3d2e1e;
+    --text-secondary: #5a4a38;
+    --accent-wheat: #c4a882;
+    --accent-shadow: rgba(196, 168, 130, 0.2);
+    --shadow-light: rgba(61, 46, 30, 0.06);
+    --shadow-medium: rgba(61, 46, 30, 0.04);
+    --shadow-dark: rgba(61, 46, 30, 0.12);
+    --skeleton-start: #e8dfd3;
+    --skeleton-mid: #f0ebe3;
+    --skeleton-end: #e8dfd3;
 }
 
 [data-theme="dark"] {
-    --bg-primary: #1a1a1a;
-    --bg-white: #2d2d2d;
-    --bg-light: #3d3d3d;
-    --bg-hover: #3a3a3a;
-    --border-default: #404040;
-    --text-primary: #f5f5f5;
-    --text-secondary: #d0d0d0;
-    --accent-green: #66bb6a;
-    --accent-shadow: rgba(102, 187, 106, 0.15);
-    --shadow-light: rgba(255, 255, 255, 0.05);
-    --shadow-medium: rgba(255, 255, 255, 0.03);
-    --shadow-dark: rgba(255, 255, 255, 0.1);
-    --skeleton-start: #3d3d3d;
-    --skeleton-mid: #4d4d4d;
-    --skeleton-end: #3d3d3d;
+    --bg-primary: #2a241e;
+    --bg-white: #3d352c;
+    --bg-light: #4a4137;
+    --bg-hover: #554b3f;
+    --border-default: #5a5044;
+    --text-primary: #f0ebe3;
+    --text-secondary: #d4c9bc;
+    --accent-wheat: #c4a882;
+    --accent-shadow: rgba(196, 168, 130, 0.15);
+    --shadow-light: rgba(240, 235, 227, 0.05);
+    --shadow-medium: rgba(240, 235, 227, 0.03);
+    --shadow-dark: rgba(240, 235, 227, 0.1);
+    --skeleton-start: #3d352c;
+    --skeleton-mid: #4a4137;
+    --skeleton-end: #3d352c;
 }

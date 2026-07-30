@@ -12,7 +12,6 @@ export default async function getNews(content = null) {
         let n = content.length
         let randomNumber = Math.floor(Math.random() * n)
         q = content[randomNumber]
-        console.log(q)
     }
 
     

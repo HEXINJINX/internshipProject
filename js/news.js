@@ -16,6 +16,52 @@ export default class news {
         }
     }
 
+    drawDashboardCards(newsData) {
+        let htmlContainer = []
+        for (let i = 0; i < 9; i++) {
+            let newsPacket = newsData[i]
+            let htmlString = `
+                <div class="miniNewsCard">
+                    <a href="${newsPacket.url}}" class="link">
+                        <div class="newsDis">${newsPacket.source.name}</div>
+                        <div class="title">${newsPacket.title}</div>
+                    </a>
+                </div>`
+
+            htmlContainer.push(htmlString)
+        }
+
+        let finalString = htmlContainer.join('')
+        document.querySelector('.newsContainer').innerHTML = ''
+        document.querySelector('.newsContainer').insertAdjacentHTML("beforeend", finalString)
+    }
+
+    displayFullNews(displayData) {
+        let htmlString = `
+        <img src="${displayData[5]}" alt="">
+            <hr>
+            <div class="currentCredits">${displayData[1]} ● ${displayData[0]['name']} ● ${displayData[6].split('T')[0]}</div>
+            <div class="currentNewsTitle"><h1>${displayData[2]}</h1></div>
+            <div class="newsDescription">
+                <p>
+                    ${this.cleanApiText(displayData[3])}
+                </p>
+            </div>
+            <hr>
+            <div class="content">
+                <p>
+                    ${this.cleanApiText(displayData[7])}
+                </p>
+            </div>
+            <hr>
+            <a class="currentLink" href="${displayData[4]}">Read more on the ${displayData[0]['name']}</a>
+            `
+
+        let currentNewsViewing = document.querySelector('.currentNewsViewing')
+        currentNewsViewing.innerHTML = ''
+        currentNewsViewing.insertAdjacentHTML('beforeend', htmlString)
+    }
+
     drawCards(newsData) {
         let htmlContainer = []
         
@@ -27,26 +73,24 @@ export default class news {
                     imgURL = `https://plus.unsplash.com/premium_photo-1707080369554-359143c6aa0b?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`
                 }
 
+                let dataStore = btoa(encodeURIComponent(this.cleanApiText(JSON.stringify(Object.values(newsPacket))).replace(/null/g, '"unknown"')))
+                
+
                 let htmlString = `
-                <div class="newsCard">
-                    <img class="newsImg" src="${imgURL}" loading="lazy">
-                    <span class="newsInfo">
-                        <h1 class="newsTitle">
-                            ${newsPacket.title}
-                        </h1>
-                        <p class="newsAbout">
-                            ${newsPacket.description}
-                        </p>
-                        <span class="credits">
-                            <a class="link" href="${newsPacket.url}">
-                                ${(newsPacket.source.name).slice(0, 20)}
-                            </a>
-                            <p class="author">
-                                ${String(newsPacket["author"]).slice(0, 20)}
-                            </p>
-                        </span>
-                    </span>
-                </div>`
+                    <div class="newsCard" id='${dataStore}'>
+                        <div class="credits">
+                            <h2>${newsPacket.source.name}</h2>
+                        </div>
+                        <div class="newsImg">
+                            <img src="${imgURL}" alt="">
+                        </div>
+                        <div class="newsInfo">
+                            <h1 class="newsTitle">${newsPacket.title}</h1>
+                            <div class="newsAbout">
+                                ${newsPacket.description}
+                            </div>
+                        </div>
+                    </div>`
 
                 htmlContainer.push(htmlString)
             }
@@ -55,11 +99,20 @@ export default class news {
         }
 
         let finalString = htmlContainer.join('')
-        let newsContainer = document.getElementById('newsContainer')
+        let newsContainer = document.querySelector('.newsList')
         let loading = document.getElementById('loadingMore')
         newsContainer.removeChild(loading)
         this.deleteOutOfView(newsContainer)
         newsContainer.insertAdjacentHTML('beforeend', finalString)
         newsContainer.appendChild(loading)
+    }
+
+    cleanApiText(text) {
+        return text
+            .replace(/<[^>]*>/g, '') 
+            .replace(/\r?\n|\r/g, ' ')      
+            .split(/\bby\s+[A-Z]/)[0]       
+            .replace(/\s+/g, ' ')            
+            .trim();                        
     }
 }

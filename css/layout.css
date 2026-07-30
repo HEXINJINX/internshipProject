@@ -2,31 +2,17 @@
 @import url('./theme.css');
 
 #container {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
+    min-height: 0;
     display: grid;
-    padding: 16px;
-    grid-template-columns: 60px 1fr 500px;
-    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 60px 1fr 0.9fr;
+    grid-template-rows: 60px 160px minmax(0, 1fr);
     grid-template-areas: 
-        "sidebar search list"
-        "sidebar info info";
-    gap: 16px;
+        "search search search"
+        "infoCards infoCards infoCards"
+        "external external local";
     transition: 120ms;
-    overflow: hidden;
-}
-
-#container.news {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    padding: 16px;
-    grid-template-columns: 60px 1fr 500px;
-    grid-template-rows: 0.3fr 1fr;
-    grid-template-areas: 
-        "sidebar search search"
-        "sidebar info info";
-    gap: 16px;
 }
 
 
@@ -35,73 +21,90 @@
     width: 100%;
     height: 100%;
     background-color: var(--bg-white);
-    border-radius: 16px;
+    
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
     border: 1px solid var(--border-default);
+    position: relative;
 }
 
-#info {
-    grid-area: info;
+#infoCards {
+    grid-area: infoCards;
+    background-color: var(--bg-white);
     width: 100%;
     height: 100%;
-    background-color: var(--bg-white);
-    border-radius: 16px;
-    padding: 16px;
-
-    display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-    min-height: 0;
     border: 1px solid var(--border-default);
-}
-
-#list {
-    grid-area: list;
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-white);
-    border-radius: 16px;
-    overflow-y: scroll;
-    min-height: 0;
-    padding: 16px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    padding: 16px;
     gap: 16px;
+    overflow-x: scroll;
     scrollbar-width: none;
+    overflow-y: hidden;
+}
+
+#external {
+    grid-area: external;
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    background-color: var(--bg-white);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: 
+        "map"
+        "stats";
+}
+
+#local {
+    grid-area: local;
+    max-width: 100%;
+    max-height: 100%;
+    height: 100%;
+    background-color: var(--bg-white);
     border: 1px solid var(--border-default);
+    display: grid;
+    gap: 16px;
+    padding: 8px;
+    grid-template-columns: 1fr 0.8fr;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: 
+        'weather exchange'
+        'headlines headlines';
 }
 
 #container.news > #list {
     display: none;
 }
 
-#nav {
-    grid-area: sidebar;
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-white);
-    border-radius: 16px;
-    display: flex;
-    gap: 16px;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-default);
-    position: sticky;
-    transition: 120ms;
-}
-
-@media (max-width: 1000px) {
-    #container {
-        grid-template-columns: 60px 1fr 300px;
+@media (max-width: 1200px) {
+    #local {
+        grid-area: local;
+        max-width: 100%;
+        max-height: 100%;
+        height: 100%;
+        background-color: var(--bg-white);
+        border: 1px solid var(--border-default);
+        display: grid;
+        gap: 16px;
+        padding: 8px;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-areas: 
+            'weather'
+            'exchange'
+            'headlines';
     }
 
-    #container.news {
-        grid-template-columns: 60px 1fr 300px;
+    .map svg {
+        position: absolute;
+        width: 70%;
+        height: 80%;
+        transition: 120ms;
     }
 }
 
@@ -109,40 +112,25 @@
     #container {
         height: 100%;
         width: 100%;
+        overflow-y: scroll;
         display: grid;
-        padding: 16px;
         grid-template-columns: 1fr;
-        grid-template-rows: 120px 1fr 1fr 60px;
+        grid-template-rows: 60px 160px minmax(0, 1fr) minmax(0, 1fr);
         grid-template-areas: 
             "search"
-            "list"
-            "info"
-            "sidebar";
-        gap: 16px;
+            "infoCards"
+            "external"
+            "local";
         transition: 120ms;
-        overflow: hidden;
     }
 
-    #container.news {
-        height: 100%;
-        width: 100%;
-        display: grid;
-        padding: 16px;
-        grid-template-columns: 1fr;
-        grid-template-rows: 120px 1fr 60px;
-        grid-template-areas: 
-            "search"
-            "info"
-            "sidebar";
-        gap: 16px;
+    body {
+        overflow: scroll;
     }
 
-    #nav {
-        display: flex;
-        flex-direction: row;
-    }
 
     .theme {
         position: static;
     }
 }
+

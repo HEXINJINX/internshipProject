@@ -24,6 +24,8 @@ export default async function getWeather(lat, lon) {
 
         let averageWindSpeed = entries.reduce((acc, curr) => acc + curr.wind.speed, 0) / entries.length
 
+        let averageFeelsLike = entries.reduce((acc, curr) => acc + curr.main.feels_like, 0) / entries.length
+
         let tempMin = entries.reduce((acc, curr) => acc < curr.main.temp_min? acc : curr.main.temp_min, Infinity)
 
         let tempMax = entries.reduce((acc, curr) => acc > curr.main.temp_max? acc : curr.main.temp_max, -Infinity)
@@ -42,7 +44,8 @@ export default async function getWeather(lat, lon) {
             icon: cloudState[2],
             sunrise: weather.city.sunrise,
             sunset: weather.city.sunset,
-            city: weather.city.name
+            city: weather.city.name,
+            feelsLike: averageFeelsLike
         }
     })
 

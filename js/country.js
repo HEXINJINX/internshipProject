@@ -8,7 +8,6 @@ export default class country {
     this.searchInput = document.getElementById('searchInput')
     this.alpha_3 = JSON.parse(localStorage.getItem('alpha_3'))
     this.selectedRegion = document.getElementById('region')
-    this.info = document.getElementById('info')
   }
 
   async drawCards(search = "", field) {
@@ -67,11 +66,11 @@ export default class country {
   } 
 
   displayInfo(region, country) {
+    let stats = document.querySelector('.stats')
     if (!this.isActive) {
       return
     }
 
-    if (!(document.getElementById('country').checked)) return;
     const displayData = {
       location: {
         region: this.countryData[region].data.objects[country].region,
@@ -109,11 +108,11 @@ export default class country {
         carSigns: this.countryData[region].data.objects[country].cars.signs
       },
       neighbors: {
-        borders: this.countryData[region].data.objects[country].borders.map(str => this.alpha_3[str])
+        borders: this.countryData[region].data.objects[country].borders.map(str => ` ${this.alpha_3[str]}`)
       }
     };
 
-    info.innerHTML = '' 
+    stats.innerHTML = '' 
 
     const otherInfo = document.createElement('div')
     otherInfo.id = 'otherInfo'
@@ -131,7 +130,7 @@ export default class country {
     flagInfo.appendChild(img)
     flagInfo.appendChild(h1)
 
-    this.info.appendChild(flagInfo)
+  stats.appendChild(flagInfo)
 
     for (const section in displayData) {
       const span = document.createElement('span')
@@ -146,6 +145,6 @@ export default class country {
       otherInfo.appendChild(span)
     }
 
-    info.appendChild(otherInfo)
+    stats.appendChild(otherInfo)
   }
 }
